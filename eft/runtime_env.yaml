@@ -1,0 +1,6 @@
+working_dir: /home1/10913/myang13/verl
+conda: "verl2"
+excludes: ["/.git/", "./outputs", "./data", "./core"]
+env_vars:
+  TORCH_NCCL_AVOID_RECORD_STREAMS: "1"
+  VLLM_ATTENTION_BACKEND: "FLASH_ATTN"

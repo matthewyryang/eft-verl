@@ -1,0 +1,241 @@
+Running on nodes: c613-[082,091-092,101-102,111-112,121-122,131-132,141-142,151-152],c619-001
+Job ID: 337711
+--------------------
+Head Node: c613-082
+Head Node IP: 129.114.17.177
+Worker Nodes: c613-091 c613-092 c613-101 c613-102 c613-111 c613-112 c613-121 c613-122 c613-131 c613-132 c613-141 c613-142 c613-151 c613-152 c619-001
+--------------------
+Starting Ray head node on c613-082...
+Ray head node PID: 3866350
+2025-08-22 16:25:37,289	INFO usage_lib.py:467 -- Usage stats collection is enabled by default without user confirmation because this terminal is detected to be non-interactive. To disable this, add `--disable-usage-stats` to the command that starts the cluster, or run the following command: `ray disable-usage-stats` before starting the cluster. See https://docs.ray.io/en/master/cluster/usage-stats.html for more details.
+2025-08-22 16:25:37,289	INFO scripts.py:913 -- [37mLocal node IP[39m: [1m129.114.17.177[22m
+2025-08-22 16:25:39,862	SUCC scripts.py:949 -- [32m--------------------[39m
+2025-08-22 16:25:39,862	SUCC scripts.py:950 -- [32mRay runtime started.[39m
+2025-08-22 16:25:39,862	SUCC scripts.py:951 -- [32m--------------------[39m
+2025-08-22 16:25:39,862	INFO scripts.py:953 -- [36mNext steps[39m
+2025-08-22 16:25:39,862	INFO scripts.py:956 -- To add another node to this Ray cluster, run
+2025-08-22 16:25:39,862	INFO scripts.py:959 -- [1m  ray start --address='129.114.17.177:6379'[22m
+2025-08-22 16:25:39,862	INFO scripts.py:968 -- To connect to this Ray cluster:
+2025-08-22 16:25:39,862	INFO scripts.py:970 -- [35mimport[39m[26m ray
+2025-08-22 16:25:39,862	INFO scripts.py:971 -- ray[35m.[39m[26minit(_node_ip_address[35m=[39m[26m[33m'129.114.17.177'[39m[26m)
+2025-08-22 16:25:39,862	INFO scripts.py:983 -- To submit a Ray job using the Ray Jobs CLI:
+2025-08-22 16:25:39,862	INFO scripts.py:984 -- [1m  RAY_ADDRESS='http://129.114.17.177:8265' ray job submit --working-dir . -- python my_script.py[22m
+2025-08-22 16:25:39,863	INFO scripts.py:993 -- See https://docs.ray.io/en/latest/cluster/running-applications/job-submission/index.html 
+2025-08-22 16:25:39,863	INFO scripts.py:997 -- for more information on submitting Ray jobs to the Ray cluster.
+2025-08-22 16:25:39,863	INFO scripts.py:1002 -- To terminate the Ray runtime, run
+2025-08-22 16:25:39,863	INFO scripts.py:1003 -- [1m  ray stop[22m
+2025-08-22 16:25:39,863	INFO scripts.py:1006 -- To view the status of the cluster, use
+2025-08-22 16:25:39,863	INFO scripts.py:1007 --   [1mray status[22m[26m
+2025-08-22 16:25:39,863	INFO scripts.py:1011 -- To monitor and debug Ray, view the dashboard at 
+2025-08-22 16:25:39,863	INFO scripts.py:1012 --   [1m129.114.17.177:8265[22m[26m
+2025-08-22 16:25:39,863	INFO scripts.py:1019 -- [4mIf connection to the dashboard fails, check your firewall settings and network configuration.[24m
+2025-08-22 16:25:39,863	INFO scripts.py:1123 -- [36m[1m--block[22m[39m
+2025-08-22 16:25:39,863	INFO scripts.py:1124 -- This command will now block forever until terminated by a signal.
+2025-08-22 16:25:39,863	INFO scripts.py:1127 -- Running subprocesses are monitored and a message will be printed if any of them terminate unexpectedly. Subprocesses exit with SIGTERM will be treated as graceful, thus NOT reported.
+Starting Ray worker nodes...
+Starting worker on c613-091
+Starting worker on c613-092
+Starting worker on c613-101
+Starting worker on c613-102
+Starting worker on c613-111
+Starting worker on c613-112
+Starting worker on c613-121
+Starting worker on c613-122
+Starting worker on c613-131
+Starting worker on c613-132
+Starting worker on c613-141
+Starting worker on c613-142
+Starting worker on c613-151
+Starting worker on c613-152
+Starting worker on c619-001
+Ray worker PIDs: 3867331 3867332 3867333 3867334 3867335 3867336 3867337 3867338 3867339 3867340 3867341 3867342 3867343 3867344 3867345
+Waiting for cluster to form completely...
+2025-08-22 16:25:51,200	INFO scripts.py:1094 -- [37mLocal node IP[39m: [1m129.114.17.178[22m
+2025-08-22 16:25:52,431	SUCC scripts.py:1110 -- [32m--------------------[39m
+2025-08-22 16:25:52,431	SUCC scripts.py:1111 -- [32mRay runtime started.[39m
+2025-08-22 16:25:52,431	SUCC scripts.py:1112 -- [32m--------------------[39m
+2025-08-22 16:25:52,431	INFO scripts.py:1114 -- To terminate the Ray runtime, run
+2025-08-22 16:25:52,431	INFO scripts.py:1115 -- [1m  ray stop[22m
+2025-08-22 16:25:52,432	INFO scripts.py:1123 -- [36m[1m--block[22m[39m
+2025-08-22 16:25:52,432	INFO scripts.py:1124 -- This command will now block forever until terminated by a signal.
+2025-08-22 16:25:52,432	INFO scripts.py:1127 -- Running subprocesses are monitored and a message will be printed if any of them terminate unexpectedly. Subprocesses exit with SIGTERM will be treated as graceful, thus NOT reported.
+2025-08-22 16:25:51,324	INFO scripts.py:1094 -- [37mLocal node IP[39m: [1m129.114.17.189[22m
+2025-08-22 16:25:52,567	SUCC scripts.py:1110 -- [32m--------------------[39m
+2025-08-22 16:25:52,567	SUCC scripts.py:1111 -- [32mRay runtime started.[39m
+2025-08-22 16:25:52,567	SUCC scripts.py:1112 -- [32m--------------------[39m
+2025-08-22 16:25:52,567	INFO scripts.py:1114 -- To terminate the Ray runtime, run
+2025-08-22 16:25:52,567	INFO scripts.py:1115 -- [1m  ray stop[22m
+2025-08-22 16:25:52,567	INFO scripts.py:1123 -- [36m[1m--block[22m[39m
+2025-08-22 16:25:52,567	INFO scripts.py:1124 -- This command will now block forever until terminated by a signal.
+2025-08-22 16:25:52,567	INFO scripts.py:1127 -- Running subprocesses are monitored and a message will be printed if any of them terminate unexpectedly. Subprocesses exit with SIGTERM will be treated as graceful, thus NOT reported.
+2025-08-22 16:25:51,324	INFO scripts.py:1094 -- [37mLocal node IP[39m: [1m129.114.17.187[22m
+2025-08-22 16:25:52,573	SUCC scripts.py:1110 -- [32m--------------------[39m
+2025-08-22 16:25:52,573	SUCC scripts.py:1111 -- [32mRay runtime started.[39m
+2025-08-22 16:25:52,573	SUCC scripts.py:1112 -- [32m--------------------[39m
+2025-08-22 16:25:52,573	INFO scripts.py:1114 -- To terminate the Ray runtime, run
+2025-08-22 16:25:52,573	INFO scripts.py:1115 -- [1m  ray stop[22m
+2025-08-22 16:25:52,573	INFO scripts.py:1123 -- [36m[1m--block[22m[39m
+2025-08-22 16:25:52,573	INFO scripts.py:1124 -- This command will now block forever until terminated by a signal.
+2025-08-22 16:25:52,573	INFO scripts.py:1127 -- Running subprocesses are monitored and a message will be printed if any of them terminate unexpectedly. Subprocesses exit with SIGTERM will be treated as graceful, thus NOT reported.
+2025-08-22 16:25:51,351	INFO scripts.py:1094 -- [37mLocal node IP[39m: [1m129.114.17.190[22m
+2025-08-22 16:25:52,585	SUCC scripts.py:1110 -- [32m--------------------[39m
+2025-08-22 16:25:52,585	SUCC scripts.py:1111 -- [32mRay runtime started.[39m
+2025-08-22 16:25:52,585	SUCC scripts.py:1112 -- [32m--------------------[39m
+2025-08-22 16:25:52,585	INFO scripts.py:1114 -- To terminate the Ray runtime, run
+2025-08-22 16:25:52,585	INFO scripts.py:1115 -- [1m  ray stop[22m
+2025-08-22 16:25:52,585	INFO scripts.py:1123 -- [36m[1m--block[22m[39m
+2025-08-22 16:25:52,585	INFO scripts.py:1124 -- This command will now block forever until terminated by a signal.
+2025-08-22 16:25:52,585	INFO scripts.py:1127 -- Running subprocesses are monitored and a message will be printed if any of them terminate unexpectedly. Subprocesses exit with SIGTERM will be treated as graceful, thus NOT reported.
+2025-08-22 16:25:51,353	INFO scripts.py:1094 -- [37mLocal node IP[39m: [1m129.114.17.188[22m
+2025-08-22 16:25:52,588	SUCC scripts.py:1110 -- [32m--------------------[39m
+2025-08-22 16:25:52,588	SUCC scripts.py:1111 -- [32mRay runtime started.[39m
+2025-08-22 16:25:52,588	SUCC scripts.py:1112 -- [32m--------------------[39m
+2025-08-22 16:25:52,588	INFO scripts.py:1114 -- To terminate the Ray runtime, run
+2025-08-22 16:25:52,588	INFO scripts.py:1115 -- [1m  ray stop[22m
+2025-08-22 16:25:52,589	INFO scripts.py:1123 -- [36m[1m--block[22m[39m
+2025-08-22 16:25:52,589	INFO scripts.py:1124 -- This command will now block forever until terminated by a signal.
+2025-08-22 16:25:52,589	INFO scripts.py:1127 -- Running subprocesses are monitored and a message will be printed if any of them terminate unexpectedly. Subprocesses exit with SIGTERM will be treated as graceful, thus NOT reported.
+2025-08-22 16:25:51,352	INFO scripts.py:1094 -- [37mLocal node IP[39m: [1m129.114.17.186[22m
+2025-08-22 16:25:52,615	SUCC scripts.py:1110 -- [32m--------------------[39m
+2025-08-22 16:25:52,615	SUCC scripts.py:1111 -- [32mRay runtime started.[39m
+2025-08-22 16:25:52,615	SUCC scripts.py:1112 -- [32m--------------------[39m
+2025-08-22 16:25:52,615	INFO scripts.py:1114 -- To terminate the Ray runtime, run
+2025-08-22 16:25:52,615	INFO scripts.py:1115 -- [1m  ray stop[22m
+2025-08-22 16:25:52,616	INFO scripts.py:1123 -- [36m[1m--block[22m[39m
+2025-08-22 16:25:52,616	INFO scripts.py:1124 -- This command will now block forever until terminated by a signal.
+2025-08-22 16:25:52,616	INFO scripts.py:1127 -- Running subprocesses are monitored and a message will be printed if any of them terminate unexpectedly. Subprocesses exit with SIGTERM will be treated as graceful, thus NOT reported.
+2025-08-22 16:25:51,384	INFO scripts.py:1094 -- [37mLocal node IP[39m: [1m129.114.17.184[22m
+2025-08-22 16:25:52,626	SUCC scripts.py:1110 -- [32m--------------------[39m
+2025-08-22 16:25:52,626	SUCC scripts.py:1111 -- [32mRay runtime started.[39m
+2025-08-22 16:25:52,626	SUCC scripts.py:1112 -- [32m--------------------[39m
+2025-08-22 16:25:52,626	INFO scripts.py:1114 -- To terminate the Ray runtime, run
+2025-08-22 16:25:52,626	INFO scripts.py:1115 -- [1m  ray stop[22m
+2025-08-22 16:25:52,626	INFO scripts.py:1123 -- [36m[1m--block[22m[39m
+2025-08-22 16:25:52,626	INFO scripts.py:1124 -- This command will now block forever until terminated by a signal.
+2025-08-22 16:25:52,626	INFO scripts.py:1127 -- Running subprocesses are monitored and a message will be printed if any of them terminate unexpectedly. Subprocesses exit with SIGTERM will be treated as graceful, thus NOT reported.
+2025-08-22 16:25:51,415	INFO scripts.py:1094 -- [37mLocal node IP[39m: [1m129.114.17.182[22m
+2025-08-22 16:25:52,657	SUCC scripts.py:1110 -- [32m--------------------[39m
+2025-08-22 16:25:52,657	SUCC scripts.py:1111 -- [32mRay runtime started.[39m
+2025-08-22 16:25:52,657	SUCC scripts.py:1112 -- [32m--------------------[39m
+2025-08-22 16:25:52,657	INFO scripts.py:1114 -- To terminate the Ray runtime, run
+2025-08-22 16:25:52,657	INFO scripts.py:1115 -- [1m  ray stop[22m
+2025-08-22 16:25:52,658	INFO scripts.py:1123 -- [36m[1m--block[22m[39m
+2025-08-22 16:25:52,658	INFO scripts.py:1124 -- This command will now block forever until terminated by a signal.
+2025-08-22 16:25:52,658	INFO scripts.py:1127 -- Running subprocesses are monitored and a message will be printed if any of them terminate unexpectedly. Subprocesses exit with SIGTERM will be treated as graceful, thus NOT reported.
+2025-08-22 16:25:51,415	INFO scripts.py:1094 -- [37mLocal node IP[39m: [1m129.114.17.183[22m
+2025-08-22 16:25:52,666	SUCC scripts.py:1110 -- [32m--------------------[39m
+2025-08-22 16:25:52,666	SUCC scripts.py:1111 -- [32mRay runtime started.[39m
+2025-08-22 16:25:52,666	SUCC scripts.py:1112 -- [32m--------------------[39m
+2025-08-22 16:25:52,666	INFO scripts.py:1114 -- To terminate the Ray runtime, run
+2025-08-22 16:25:52,666	INFO scripts.py:1115 -- [1m  ray stop[22m
+2025-08-22 16:25:51,424	INFO scripts.py:1094 -- [37mLocal node IP[39m: [1m129.114.17.181[22m
+2025-08-22 16:25:52,666	SUCC scripts.py:1110 -- [32m--------------------[39m
+2025-08-22 16:25:52,666	SUCC scripts.py:1111 -- [32mRay runtime started.[39m
+2025-08-22 16:25:52,666	SUCC scripts.py:1112 -- [32m--------------------[39m
+2025-08-22 16:25:52,666	INFO scripts.py:1114 -- To terminate the Ray runtime, run
+2025-08-22 16:25:52,666	INFO scripts.py:1115 -- [1m  ray stop[22m
+2025-08-22 16:25:52,666	INFO scripts.py:1123 -- [36m[1m--block[22m[39m
+2025-08-22 16:25:52,666	INFO scripts.py:1124 -- This command will now block forever until terminated by a signal.
+2025-08-22 16:25:52,666	INFO scripts.py:1127 -- Running subprocesses are monitored and a message will be printed if any of them terminate unexpectedly. Subprocesses exit with SIGTERM will be treated as graceful, thus NOT reported.
+2025-08-22 16:25:52,666	INFO scripts.py:1123 -- [36m[1m--block[22m[39m
+2025-08-22 16:25:52,666	INFO scripts.py:1124 -- This command will now block forever until terminated by a signal.
+2025-08-22 16:25:52,666	INFO scripts.py:1127 -- Running subprocesses are monitored and a message will be printed if any of them terminate unexpectedly. Subprocesses exit with SIGTERM will be treated as graceful, thus NOT reported.
+2025-08-22 16:25:51,466	INFO scripts.py:1094 -- [37mLocal node IP[39m: [1m129.114.17.180[22m
+2025-08-22 16:25:52,700	SUCC scripts.py:1110 -- [32m--------------------[39m
+2025-08-22 16:25:52,701	SUCC scripts.py:1111 -- [32mRay runtime started.[39m
+2025-08-22 16:25:52,701	SUCC scripts.py:1112 -- [32m--------------------[39m
+2025-08-22 16:25:52,701	INFO scripts.py:1114 -- To terminate the Ray runtime, run
+2025-08-22 16:25:52,701	INFO scripts.py:1115 -- [1m  ray stop[22m
+2025-08-22 16:25:52,701	INFO scripts.py:1123 -- [36m[1m--block[22m[39m
+2025-08-22 16:25:52,701	INFO scripts.py:1124 -- This command will now block forever until terminated by a signal.
+2025-08-22 16:25:52,701	INFO scripts.py:1127 -- Running subprocesses are monitored and a message will be printed if any of them terminate unexpectedly. Subprocesses exit with SIGTERM will be treated as graceful, thus NOT reported.
+2025-08-22 16:25:51,491	INFO scripts.py:1094 -- [37mLocal node IP[39m: [1m129.114.17.192[22m
+2025-08-22 16:25:52,735	SUCC scripts.py:1110 -- [32m--------------------[39m
+2025-08-22 16:25:52,735	SUCC scripts.py:1111 -- [32mRay runtime started.[39m
+2025-08-22 16:25:52,735	SUCC scripts.py:1112 -- [32m--------------------[39m
+2025-08-22 16:25:52,735	INFO scripts.py:1114 -- To terminate the Ray runtime, run
+2025-08-22 16:25:52,735	INFO scripts.py:1115 -- [1m  ray stop[22m
+2025-08-22 16:25:52,736	INFO scripts.py:1123 -- [36m[1m--block[22m[39m
+2025-08-22 16:25:52,736	INFO scripts.py:1124 -- This command will now block forever until terminated by a signal.
+2025-08-22 16:25:52,736	INFO scripts.py:1127 -- Running subprocesses are monitored and a message will be printed if any of them terminate unexpectedly. Subprocesses exit with SIGTERM will be treated as graceful, thus NOT reported.
+2025-08-22 16:25:51,543	INFO scripts.py:1094 -- [37mLocal node IP[39m: [1m129.114.17.191[22m
+2025-08-22 16:25:52,863	SUCC scripts.py:1110 -- [32m--------------------[39m
+2025-08-22 16:25:52,863	SUCC scripts.py:1111 -- [32mRay runtime started.[39m
+2025-08-22 16:25:52,863	SUCC scripts.py:1112 -- [32m--------------------[39m
+2025-08-22 16:25:52,863	INFO scripts.py:1114 -- To terminate the Ray runtime, run
+2025-08-22 16:25:52,863	INFO scripts.py:1115 -- [1m  ray stop[22m
+2025-08-22 16:25:52,863	INFO scripts.py:1123 -- [36m[1m--block[22m[39m
+2025-08-22 16:25:52,863	INFO scripts.py:1124 -- This command will now block forever until terminated by a signal.
+2025-08-22 16:25:52,863	INFO scripts.py:1127 -- Running subprocesses are monitored and a message will be printed if any of them terminate unexpectedly. Subprocesses exit with SIGTERM will be treated as graceful, thus NOT reported.
+2025-08-22 16:25:51,578	INFO scripts.py:1094 -- [37mLocal node IP[39m: [1m129.114.17.179[22m
+2025-08-22 16:25:52,868	SUCC scripts.py:1110 -- [32m--------------------[39m
+2025-08-22 16:25:52,868	SUCC scripts.py:1111 -- [32mRay runtime started.[39m
+2025-08-22 16:25:52,868	SUCC scripts.py:1112 -- [32m--------------------[39m
+2025-08-22 16:25:52,868	INFO scripts.py:1114 -- To terminate the Ray runtime, run
+2025-08-22 16:25:52,868	INFO scripts.py:1115 -- [1m  ray stop[22m
+2025-08-22 16:25:52,869	INFO scripts.py:1123 -- [36m[1m--block[22m[39m
+2025-08-22 16:25:52,869	INFO scripts.py:1124 -- This command will now block forever until terminated by a signal.
+2025-08-22 16:25:52,869	INFO scripts.py:1127 -- Running subprocesses are monitored and a message will be printed if any of them terminate unexpectedly. Subprocesses exit with SIGTERM will be treated as graceful, thus NOT reported.
+2025-08-22 16:25:51,553	INFO scripts.py:1094 -- [37mLocal node IP[39m: [1m129.114.17.185[22m
+2025-08-22 16:25:52,878	SUCC scripts.py:1110 -- [32m--------------------[39m
+2025-08-22 16:25:52,878	SUCC scripts.py:1111 -- [32mRay runtime started.[39m
+2025-08-22 16:25:52,878	SUCC scripts.py:1112 -- [32m--------------------[39m
+2025-08-22 16:25:52,878	INFO scripts.py:1114 -- To terminate the Ray runtime, run
+2025-08-22 16:25:52,878	INFO scripts.py:1115 -- [1m  ray stop[22m
+2025-08-22 16:25:52,878	INFO scripts.py:1123 -- [36m[1m--block[22m[39m
+2025-08-22 16:25:52,878	INFO scripts.py:1124 -- This command will now block forever until terminated by a signal.
+2025-08-22 16:25:52,878	INFO scripts.py:1127 -- Running subprocesses are monitored and a message will be printed if any of them terminate unexpectedly. Subprocesses exit with SIGTERM will be treated as graceful, thus NOT reported.
+Checking Ray cluster status...
+======== Autoscaler status: 2025-08-22 16:26:08.015467 ========
+Node status
+---------------------------------------------------------------
+Active:
+ 1 node_aa5b1475cf40562931902e952f39a97d0acbf56a78048c196079b4c5
+ 1 node_84658056ada9e749772f5e7d9e216d6357aac98d3c422a4d341d8d04
+ 1 node_072b32784486198a7a8f742af3f33f4463f6010f4507d8f7fbbf3f33
+ 1 node_71bea4176da38f770329674d62998c9596784a887818d7b93ec3e3d8
+ 1 node_0913f9ef7dbd0b38af8b22b239053faeaad001e7e44624a8502cdef6
+ 1 node_8dec0310eeb7d0d9f0003808c03439bee550eba54d0d404d620d37a2
+ 1 node_842ecdba4f206209f050109a03bf4edf35f1f75684282bf277df7c2e
+ 1 node_9bd3adbdfa996443a11d06d741d4d87349c7aca0052f03effa268b90
+ 1 node_feb9b49e4c07270b9ef40cca7e76c9fa2cae7f603ab029df46d2351b
+ 1 node_a898ded6a4995d40c1a0b04727bf4e89b7491043672afe7536907a86
+ 1 node_5fd6da29c5bf679aba11455436d0364168b0b19335e9617f90d4f033
+ 1 node_c9b5d394cf82344125553e7f0d1b95b982a2e5e1a50f89e9e0a06b61
+ 1 node_af6588d0fbb273602dc3553d566af468f286c23924ea1e9df6677360
+ 1 node_5d3668d35dca19b57743bcb2d63ddb2805df3dadf940e48ccf31b6be
+ 1 node_b86e6bbd07712768b32fbe84148d4384330e81cb7417b862ed906b2a
+ 1 node_5fadda7df0d97499eb97bca86dd2cfb79e29a22ae66dd566ba78ec04
+Pending:
+ (no pending nodes)
+Recent failures:
+ (no failures)
+
+Resources
+---------------------------------------------------------------
+Total Usage:
+ 0.0/1152.0 CPU
+ 0.0/16.0 GPU
+ 0B/2.34TiB memory
+ 0B/894.90GiB object_store_memory
+
+Total Constraints:
+ (no request_resources() constraints)
+Total Demands:
+ (no resource demands)
+Submitting Ray job: /home1/10913/myang13/verl/eft/grpo/grpo_16k.sh from /home1/10913/myang13/verl
+2025-08-22 16:26:15,551	INFO cli.py:41 -- [37mJob submission server address[39m: [1mhttp://129.114.17.177:8265[22m
+2025-08-22 16:26:19,890	SUCC cli.py:65 -- [32m-------------------------------------------------------[39m
+2025-08-22 16:26:19,891	SUCC cli.py:66 -- [32mJob 'raysubmit_EYAjFi5GQn4JadYs' submitted successfully[39m
+2025-08-22 16:26:19,891	SUCC cli.py:67 -- [32m-------------------------------------------------------[39m
+2025-08-22 16:26:19,891	INFO cli.py:291 -- [36mNext steps[39m
+2025-08-22 16:26:19,891	INFO cli.py:292 -- Query the logs of the job:
+2025-08-22 16:26:19,891	INFO cli.py:294 -- [1mray job logs raysubmit_EYAjFi5GQn4JadYs[22m
+2025-08-22 16:26:19,891	INFO cli.py:296 -- Query the status of the job:
+2025-08-22 16:26:19,891	INFO cli.py:298 -- [1mray job status raysubmit_EYAjFi5GQn4JadYs[22m
+2025-08-22 16:26:19,891	INFO cli.py:300 -- Request the job to be stopped:
+2025-08-22 16:26:19,891	INFO cli.py:302 -- [1mray job stop raysubmit_EYAjFi5GQn4JadYs[22m
+Ray job submission command executed successfully (exit status 0).
+Use 'ray job list' or the dashboard http://129.114.17.177:8265 to check job status.
+Ray cluster is running.
+Slurm job will remain active until Ray processes finish or time limit is reached.

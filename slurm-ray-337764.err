@@ -1,0 +1,96 @@
+[2025-08-22 17:58:25,195 W 2774261 2774261] global_state_accessor.cc:435: Retrying to get node with node ID f7134de5ecc048e40b8b6cece6e352dd3283460469fd58ad4953784d
+[2025-08-22 17:58:25,306 W 3205816 3205816] global_state_accessor.cc:435: Retrying to get node with node ID 1df49099ae01f8081eef543d054dfd75439877c3afe92d2cf25666a6
+[2025-08-22 17:58:25,348 W 3768870 3768870] global_state_accessor.cc:435: Retrying to get node with node ID 33ad3d96760cca5e7b9f1ec288515ca18016b0491d269579ad5fef1b
+[2025-08-22 17:58:25,351 W 2335663 2335663] global_state_accessor.cc:435: Retrying to get node with node ID 30c061f846560bfd2cee5b0dcd0932c1cda3b7da7050caebcb3acea3
+[2025-08-22 17:58:25,352 W 2589292 2589292] global_state_accessor.cc:435: Retrying to get node with node ID 681ccc50440e419d950a5664801d9bb2686e3c2b188a065271ea3bf9
+[2025-08-22 17:58:25,358 W 1662887 1662887] global_state_accessor.cc:435: Retrying to get node with node ID 21d64d579746e9f15df9813d2981bcb5346d6b55d1b73c3cc8558f8e
+[2025-08-22 17:58:25,365 W 1582574 1582574] global_state_accessor.cc:435: Retrying to get node with node ID d9e68f69459adc1825f18991f91c5edca1061323f5aef9787fc95ced
+[2025-08-22 17:58:25,364 W 1777285 1777285] global_state_accessor.cc:435: Retrying to get node with node ID f38abc6032798d3801882d015d7c75c46d2114fa8f039062b18fb070
+[2025-08-22 17:58:25,367 W 3206667 3206667] global_state_accessor.cc:435: Retrying to get node with node ID 9834b5f99c1656cadfd46ae08b45129c655f799f2178df7003f06e7a
+[2025-08-22 17:58:25,371 W 2001386 2001386] global_state_accessor.cc:435: Retrying to get node with node ID f84a526c5fb8c400f59ffb64cbad0eb6c4c79d7cb66cda812badb5a6
+[2025-08-22 17:58:25,384 W 1564330 1564330] global_state_accessor.cc:435: Retrying to get node with node ID 6b608455ea347f957364bbd82d560ca0265685276eaac19c8f44f1b0
+[2025-08-22 17:58:25,391 W 3647971 3647971] global_state_accessor.cc:435: Retrying to get node with node ID b666d2fc248158684f535e1c25fbf92e2412402cd0f9913c30e9fe58
+[2025-08-22 17:58:25,435 W 3052230 3052230] global_state_accessor.cc:435: Retrying to get node with node ID 4be1015193d8e3fa576f79a735f900dc41decf9f6887663a4ce7a9a8
+[2025-08-22 17:58:25,547 W 141859 141859] global_state_accessor.cc:435: Retrying to get node with node ID b92694b1278ac24ee2ea2228e20e2f25c160d99fb7e778ac0145f59b
+[2025-08-22 17:58:25,588 W 1545704 1545704] global_state_accessor.cc:435: Retrying to get node with node ID a114a46d01e29a7e115418bb01bfea480523e6e6f4ae0d7e1037f3f9
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+slurmstepd: error: *** STEP 337764.11 ON c613-112 CANCELLED AT 2025-08-22T17:58:38 ***
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+slurmstepd: error: *** STEP 337764.3 ON c613-101 CANCELLED AT 2025-08-22T17:58:38 ***
+slurmstepd: error: *** STEP 337764.4 ON c613-122 CANCELLED AT 2025-08-22T17:58:38 ***
+slurmstepd: error: *** STEP 337764.16 ON c613-102 CANCELLED AT 2025-08-22T17:58:38 ***
+slurmstepd: error: *** STEP 337764.14 ON c613-121 CANCELLED AT 2025-08-22T17:58:38 ***
+slurmstepd: error: *** STEP 337764.6 ON c613-141 CANCELLED AT 2025-08-22T17:58:38 ***
+slurmstepd: error: *** STEP 337764.10 ON c613-142 CANCELLED AT 2025-08-22T17:58:38 ***
+slurmstepd: error: *** STEP 337764.12 ON c613-151 CANCELLED AT 2025-08-22T17:58:38 ***
+slurmstepd: error: *** STEP 337764.8 ON c613-131 CANCELLED AT 2025-08-22T17:58:38 ***
+slurmstepd: error: *** STEP 337764.2 ON c613-091 CANCELLED AT 2025-08-22T17:58:38 ***
+slurmstepd: error: *** STEP 337764.7 ON c613-092 CANCELLED AT 2025-08-22T17:58:38 ***
+slurmstepd: error: *** STEP 337764.9 ON c613-152 CANCELLED AT 2025-08-22T17:58:38 ***
+slurmstepd: error: *** STEP 337764.13 ON c619-001 CANCELLED AT 2025-08-22T17:58:38 ***
+slurmstepd: error: *** STEP 337764.15 ON c613-132 CANCELLED AT 2025-08-22T17:58:38 ***
+slurmstepd: error: *** JOB 337764 ON c613-082 CANCELLED AT 2025-08-22T17:58:38 ***
+slurmstepd: error: *** STEP 337764.5 ON c613-111 CANCELLED AT 2025-08-22T17:58:38 ***
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+slurmstepd: error: *** STEP 337764.1 ON c613-082 CANCELLED AT 2025-08-22T17:58:38 ***
+srun: error: c613-132: task 0: Exited with exit code 1
+srun: error: c613-091: task 0: Exited with exit code 1
+srun: error: c613-112: task 0: Exited with exit code 1
+srun: error: c613-111: task 0: Exited with exit code 1
+srun: error: c613-122: task 0: Exited with exit code 1
+srun: error: c613-101: task 0: Exited with exit code 1
+srun: error: c613-142: task 0: Exited with exit code 1
+srun: error: c613-102: task 0: Exited with exit code 1
+srun: error: c619-001: task 0: Exited with exit code 1
+srun: error: c613-152: task 0: Exited with exit code 1
+srun: error: c613-092: task 0: Exited with exit code 1
+srun: error: c613-141: task 0: Exited with exit code 1
+srun: error: c613-131: task 0: Exited with exit code 1
+srun: error: c613-121: task 0: Exited with exit code 1
+srun: error: c613-151: task 0: Exited with exit code 1
+srun: error: c613-082: task 0: Exited with exit code 1

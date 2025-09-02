@@ -1,0 +1,99 @@
+[2025-08-22 17:59:24,773 W 2503016 2503016] global_state_accessor.cc:435: Retrying to get node with node ID 57dbba9837bfe0a6d1176be9177ad0348db5aaa234efbf70d64bcaad
+[2025-08-22 17:59:24,829 W 3675434 3675434] global_state_accessor.cc:435: Retrying to get node with node ID a2092359863af0ae54eb706c9a1c231eb6be86eb03b12e327f563ebf
+[2025-08-22 17:59:24,837 W 2309307 2309307] global_state_accessor.cc:435: Retrying to get node with node ID fa19242a1e70d5f7d39d38b5db835596326828e58e8333132c3cc7e5
+[2025-08-22 17:59:24,865 W 3413923 3413923] global_state_accessor.cc:435: Retrying to get node with node ID cb7971c507773fe1d98c0dfba9e8a1036e2030bb478e5e251ecee352
+[2025-08-22 17:59:24,872 W 4180092 4180092] global_state_accessor.cc:435: Retrying to get node with node ID 48cd3d34403b23fac831fd7f1311e8d68774b11cd992652ecd5aac74
+[2025-08-22 17:59:24,883 W 3960665 3960665] global_state_accessor.cc:435: Retrying to get node with node ID 97fe196d517120f77ec58f8d8c242ca6583f3ca211c2150c0c0e07e1
+[2025-08-22 17:59:24,884 W 3744346 3744346] global_state_accessor.cc:435: Retrying to get node with node ID 606ca75dd5b7ca6b1bf33b1e0d70502edfa9df601044b8d1272e1a7d
+[2025-08-22 17:59:24,890 W 2364529 2364529] global_state_accessor.cc:435: Retrying to get node with node ID 9a14a588fa5725e18a2c9187b80c3d1ce42a306defcc55d76858113f
+[2025-08-22 17:59:24,891 W 3478307 3478307] global_state_accessor.cc:435: Retrying to get node with node ID 4d33568dc1b3616e7bfb54584c892ee4b3aeac3ad86490ca08e234d2
+[2025-08-22 17:59:24,931 W 2503353 2503353] global_state_accessor.cc:435: Retrying to get node with node ID 0767af701770a801e539597444a2d7906674ec5256d85306ccf8160a
+[2025-08-22 17:59:24,971 W 3651227 3651227] global_state_accessor.cc:435: Retrying to get node with node ID d996c0b0b0b9c72c0624bc3997d9246c1bf12e223c6acd8f3ed03c68
+[2025-08-22 17:59:24,982 W 2425218 2425218] global_state_accessor.cc:435: Retrying to get node with node ID c548f2977a45dcc593632a3d12dade2d833680bf15d394c6983bbdcf
+[2025-08-22 17:59:24,983 W 3531003 3531003] global_state_accessor.cc:435: Retrying to get node with node ID ac5ae8ca2fbfe0b43951d97551b92307dc4ff3b62c61375a0868838e
+[2025-08-22 17:59:25,058 W 2203014 2203014] global_state_accessor.cc:435: Retrying to get node with node ID 9b63980ba089ad6057962ab867c22bcaf5ab93f65d8cda8d2af9ef67
+[2025-08-22 17:59:25,060 W 4106955 4106955] global_state_accessor.cc:435: Retrying to get node with node ID 180a0feb3b8ca236398314c5f8a32e871d3e16a7b014d512422fab50
+2025-08-22 17:59:56,127	INFO dashboard_sdk.py:338 -- Uploading package gcs://_ray_pkg_b4288250c51a14d9.zip.
+2025-08-22 17:59:56,127	INFO packaging.py:588 -- Creating a file package for local module '/home1/10913/myang13/verl'.
+/var/spool/slurmd/job337765/slurm_script: line 88: [: -ne: unary operator expected
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: *** STEP 337765.10 ON c612-061 CANCELLED AT 2025-08-22T18:01:04 ***
+slurmstepd: error: *** STEP 337765.13 ON c612-071 CANCELLED AT 2025-08-22T18:01:04 ***
+slurmstepd: error: *** STEP 337765.12 ON c612-111 CANCELLED AT 2025-08-22T18:01:04 ***
+slurmstepd: error: *** STEP 337765.15 ON c612-072 CANCELLED AT 2025-08-22T18:01:04 ***
+slurmstepd: error: *** STEP 337765.11 ON c612-082 CANCELLED AT 2025-08-22T18:01:04 ***
+slurmstepd: error: *** STEP 337765.14 ON c612-102 CANCELLED AT 2025-08-22T18:01:04 ***
+slurmstepd: error: *** STEP 337765.6 ON c612-052 CANCELLED AT 2025-08-22T18:01:04 ***
+slurmstepd: error: *** STEP 337765.4 ON c612-051 CANCELLED AT 2025-08-22T18:01:04 ***
+slurmstepd: error: *** STEP 337765.8 ON c612-062 CANCELLED AT 2025-08-22T18:01:04 ***
+slurmstepd: error: *** STEP 337765.7 ON c612-092 CANCELLED AT 2025-08-22T18:01:04 ***
+slurmstepd: error: *** STEP 337765.5 ON c612-081 CANCELLED AT 2025-08-22T18:01:04 ***
+slurmstepd: error: *** STEP 337765.3 ON c612-091 CANCELLED AT 2025-08-22T18:01:04 ***
+slurmstepd: error: *** STEP 337765.16 ON c612-101 CANCELLED AT 2025-08-22T18:01:04 ***
+slurmstepd: error: *** STEP 337765.9 ON c612-112 CANCELLED AT 2025-08-22T18:01:04 ***
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+srun: got SIGCONT
+slurmstepd: error: *** STEP 337765.2 ON c612-042 CANCELLED AT 2025-08-22T18:01:04 ***
+slurmstepd: error: *** JOB 337765 ON c612-041 CANCELLED AT 2025-08-22T18:01:04 ***
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+srun: forcing job termination
+slurmstepd: error: *** STEP 337765.1 ON c612-041 CANCELLED AT 2025-08-22T18:01:04 ***
+srun: error: c612-092: task 0: Exited with exit code 1
+srun: error: c612-082: task 0: Exited with exit code 1
+srun: error: c612-102: task 0: Exited with exit code 1
+srun: error: c612-072: task 0: Exited with exit code 1
+srun: error: c612-091: task 0: Exited with exit code 1
+srun: error: c612-071: task 0: Exited with exit code 1
+srun: error: c612-061: task 0: Exited with exit code 1
+srun: error: c612-062: task 0: Exited with exit code 1
+srun: error: c612-111: task 0: Exited with exit code 1
+srun: error: c612-042: task 0: Exited with exit code 1
+srun: error: c612-051: task 0: Exited with exit code 1
+srun: error: c612-052: task 0: Exited with exit code 1
+srun: error: c612-112: task 0: Exited with exit code 1
+srun: error: c612-101: task 0: Exited with exit code 1
+srun: error: c612-081: task 0: Exited with exit code 1
+srun: error: c612-041: task 0: Exited with exit code 1
