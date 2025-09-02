@@ -655,6 +655,11 @@ class RayPPOTrainer:
         sample_scores = []
         sample_turns = []
 
+        # difficulty
+        difficulties = []
+        lengths = []
+        reward_tensor_lst = []
+
         for test_data in self.val_dataloader:
             test_batch = DataProto.from_single_dict(test_data)
 
@@ -735,6 +740,23 @@ class RayPPOTrainer:
 
             data_source_lst.append(test_batch.non_tensor_batch.get("data_source", ["unknown"] * reward_tensor.shape[0]))
 
+            reward_tensor_lst.append(reward_tensor)
+            if 'level' in test_batch.non_tensor_batch:
+                difficulties.extend(list(test_batch.non_tensor_batch['level']))
+            else:
+                ref_rewards = list(test_batch.non_tensor_batch['reward'])
+                def return_difficulty(ref_model_reward):
+                    difficulty = 'unknown'
+                    if ref_model_reward > 10 / 16:
+                        difficulty = 'easy'
+                    elif ref_model_reward == 0:
+                        difficulty = 'hard'
+                    else:
+                        difficulty = 'medium'
+                    return difficulty
+                difficulties.extend([return_difficulty(ref_reward) for ref_reward in ref_rewards])
+            lengths.extend(map(lambda text: len(self.tokenizer.encode(text)), output_texts))
+
         self._maybe_log_val_generations(inputs=sample_inputs, outputs=sample_outputs, scores=sample_scores)
 
         # dump generations
@@ -754,29 +776,110 @@ class RayPPOTrainer:
 
         data_sources = np.concatenate(data_source_lst, axis=0)
 
-        data_src2var2metric2val = process_validation_metrics(data_sources, sample_inputs, reward_extra_infos_dict)
-        metric_dict = {}
-        for data_source, var2metric2val in data_src2var2metric2val.items():
-            core_var = "acc" if "acc" in var2metric2val else "reward"
-            for var_name, metric2val in var2metric2val.items():
-                n_max = max([int(name.split("@")[-1].split("/")[0]) for name in metric2val.keys()])
-                for metric_name, metric_val in metric2val.items():
-                    if (
-                        (var_name == core_var)
-                        and any(metric_name.startswith(pfx) for pfx in ["mean", "maj", "best"])
-                        and (f"@{n_max}" in metric_name)
-                    ):
-                        metric_sec = "val-core"
-                    else:
-                        metric_sec = "val-aux"
-                    pfx = f"{metric_sec}/{data_source}/{var_name}/{metric_name}"
-                    metric_dict[pfx] = metric_val
+        # save rollouts
+        rollouts = []
+        for input, output, score, ref_score, index, split, source in zip(sample_inputs, sample_outputs, sample_scores, difficulties, sample_indices, sample_splits, data_sources):
+            rollouts.append(
+                {
+                    'input': input,
+                    'output': output,
+                    'score': score,
+                    'ref_score': ref_score,
+                    'index': index,
+                    'split': split,
+                    'source': source,
+                }
+            )
 
-        if len(sample_turns) > 0:
-            sample_turns = np.concatenate(sample_turns)
-            metric_dict["val-aux/num_turns/min"] = sample_turns.min()
-            metric_dict["val-aux/num_turns/max"] = sample_turns.max()
-            metric_dict["val-aux/num_turns/mean"] = sample_turns.mean()
+        # save rollouts as json
+        rollouts_json = json.dumps(rollouts)
+        rollouts_save_location = f"{self.config.trainer.default_local_dir}/{self.global_steps}_rollouts.json"
+        with open(rollouts_save_location, 'w') as f:
+            f.write(rollouts_json)
+        
+
+        for key_info, lst in reward_extra_infos_dict.items():
+            assert len(lst) == 0 or len(lst) == len(sample_scores), f"{key_info}: {len(lst)=}, {len(sample_scores)=}"
+
+        reward_tensor = torch.cat(reward_tensor_lst, dim=0).sum(-1).cpu()  # (batch_size,)
+        # evaluate test_score based on data source
+        data_source_reward = defaultdict(list)
+        data_source_length = defaultdict(list)
+        data_source_0_length = defaultdict(list)
+        data_source_1_length = defaultdict(list)
+        data_source_reward_by_difficulty = defaultdict(lambda: defaultdict(list))
+        data_source_length_by_difficulty = defaultdict(lambda: defaultdict(list))
+        data_source_0_length_by_difficulty = defaultdict(lambda: defaultdict(list))
+        data_source_1_length_by_difficulty = defaultdict(lambda: defaultdict(list))
+        
+        for i in range(reward_tensor.shape[0]):
+            data_source = data_sources[i]
+            difficulty = difficulties[i]
+            reward = reward_tensor[i].item()
+
+            data_source_reward[data_source].append(reward)
+            data_source_reward_by_difficulty[data_source][difficulty].append(reward)
+            
+            data_source_length[data_source].append(lengths[i])
+            data_source_length_by_difficulty[data_source][difficulty].append(lengths[i])
+
+            if reward == 0:
+                data_source_0_length[data_source].append(lengths[i])
+                data_source_0_length_by_difficulty[data_source][difficulty].append(lengths[i])
+            elif reward == 1:
+                data_source_1_length[data_source].append(lengths[i])
+                data_source_1_length_by_difficulty[data_source][difficulty].append(lengths[i])
+            else:
+                raise ValueError(f"reward must be 0 or 1, but got {reward}")
+            
+
+        metric_dict = {}
+        for data_source, rewards in data_source_reward.items():
+            metric_dict[f"val/{data_source}/reward/mean"] = np.mean(rewards)
+            metric_dict[f"val/{data_source}/test_score/"] = np.mean(rewards)
+            metric_dict[f"val/{data_source}/length/mean"] = np.mean(data_source_length[data_source])
+            metric_dict[f"val/{data_source}/0_length/mean"] = np.mean(data_source_0_length[data_source]) if len(data_source_0_length[data_source]) > 0 else -1
+            metric_dict[f"val/{data_source}/1_length/mean"] = np.mean(data_source_1_length[data_source]) if len(data_source_1_length[data_source]) > 0 else -1            
+            
+            for difficulty, per_difficulty_rewards in data_source_reward_by_difficulty[data_source].items():
+                metric_dict[f"val/{data_source}/reward/{difficulty}"] = np.mean(per_difficulty_rewards)
+                metric_dict[f"val/{data_source}/test_score/{difficulty}"] = np.mean(per_difficulty_rewards)
+            
+            for difficulty, per_difficulty_lengths in data_source_length_by_difficulty[data_source].items():
+                metric_dict[f"val/{data_source}/length/{difficulty}"] = np.mean(per_difficulty_lengths)
+            
+            for difficulty in data_source_length_by_difficulty[data_source].keys():
+                per_difficulty_lengths = data_source_0_length_by_difficulty[data_source][difficulty]
+                mean_incorrect_length = np.mean(per_difficulty_lengths) if len(per_difficulty_lengths) > 0 else -1
+                metric_dict[f"val/{data_source}/0_length/{difficulty}"] = mean_incorrect_length
+            
+            for difficulty in data_source_length_by_difficulty[data_source].keys():
+                per_difficulty_lengths = data_source_1_length_by_difficulty[data_source][difficulty]
+                mean_correct_length = np.mean(per_difficulty_lengths) if len(per_difficulty_lengths) > 0 else -1
+                metric_dict[f"val/{data_source}/1_length/{difficulty}"] = mean_correct_length
+        
+        # data_src2var2metric2val = process_validation_metrics(data_sources, sample_inputs, reward_extra_infos_dict)
+        # for data_source, var2metric2val in data_src2var2metric2val.items():
+        #     core_var = "acc" if "acc" in var2metric2val else "reward"
+        #     for var_name, metric2val in var2metric2val.items():
+        #         n_max = max([int(name.split("@")[-1].split("/")[0]) for name in metric2val.keys()])
+        #         for metric_name, metric_val in metric2val.items():
+        #             if (
+        #                 (var_name == core_var)
+        #                 and any(metric_name.startswith(pfx) for pfx in ["mean", "maj", "best"])
+        #                 and (f"@{n_max}" in metric_name)
+        #             ):
+        #                 metric_sec = "val-core"
+        #             else:
+        #                 metric_sec = "val-aux"
+        #             pfx = f"{metric_sec}/{data_source}/{var_name}/{metric_name}"
+        #             metric_dict[pfx] = metric_val
+
+        # if len(sample_turns) > 0:
+        #     sample_turns = np.concatenate(sample_turns)
+        #     metric_dict["val-aux/num_turns/min"] = sample_turns.min()
+        #     metric_dict["val-aux/num_turns/max"] = sample_turns.max()
+        #     metric_dict["val-aux/num_turns/mean"] = sample_turns.mean()
 
         return metric_dict
 
@@ -1347,7 +1450,7 @@ class RayPPOTrainer:
                     }
                 )
                 # collect metrics
-                metrics.update(compute_data_metrics(batch=batch, use_critic=self.use_critic))
+                metrics.update(compute_data_metrics(batch=batch, use_critic=self.use_critic, tokenizer=self.tokenizer))
                 metrics.update(compute_timing_metrics(batch=batch, timing_raw=timing_raw))
                 # TODO: implement actual tflpo and theoretical tflpo
                 n_gpus = self.resource_pool_manager.get_n_gpus()

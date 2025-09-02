@@ -4,16 +4,16 @@ export VLLM_ATTENTION_BACKEND=FLASH_ATTN
 export TRITON_CACHE_DIR=/tmp/triton_cache
 mkdir -p $TRITON_CACHE_DIR
 
-source /work/10913/myang13/miniconda3/bin/activate verl2
+source /projects/bffc/myang13/miniconda3/bin/activate verl
 
 cd /home1/10913/myang13/verl
 EXPERIMENT_NAME=test-e3-1.7B-multinode
-MODEL_PATH=/work/10913/myang13/models/models--CMU-AIRe--e3-1.7B/snapshots/6db1b2fed3cd8d6cd2cd6270807a45f1e22925df
+MODEL_PATH=/projects/bffc/myang13/Qwen3-4B
 
 PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     algorithm.adv_estimator=grpo \
-    data.train_files=/work/10913/myang13/data/e3-math-medhard-zero-accuracy.parquet \
-    data.val_files=/work/10913/myang13/data/hmmt-aime-2025.parquet \
+    data.train_files=/projects/bffc/myang13/data/e3-math-medhard-zero-accuracy.parquet \
+    data.val_files=/projects/bffc/myang13/data/hmmt-aime-2025.parquet \
     data.train_batch_size=64 \
     data.max_prompt_length=1024 \
     data.max_response_length=16384 \
@@ -47,7 +47,9 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.free_cache_engine=False \
     actor_rollout_ref.actor.ulysses_sequence_parallel_size=2 \
     actor_rollout_ref.ref.ulysses_sequence_parallel_size=2 \
+    actor_rollout_ref.actor.loss_agg_mode=seq-mean-token-sum-norm \
     algorithm.use_kl_in_reward=False \
+    algorithm.norm_adv_by_std_in_grpo=False \
     custom_reward_function.path=verl/utils/reward_score/math_verify.py \
     trainer.val_before_train=False \
     trainer.critic_warmup=0 \
@@ -58,5 +60,12 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     trainer.nnodes=16 \
     trainer.save_freq=-1 \
     trainer.test_freq=30 \
-    trainer.total_epochs=1 "${@:1}" > /home1/10913/myang13/verl/logs/$EXPERIMENT_NAME.log 2>&1
+    trainer.total_epochs=1 "${@:1}" > /u/myang13/eft-verl/logs/$EXPERIMENT_NAME.log 2>&1
 
+
+    # to enable DAPO Dyanmic Sampling...
+
+    # algorithm.filter_groups.enable=True \
+    # algorithm.filter_groups.metric=acc \
+    # algorithm.filter_groups.max_num_gen_batches=10 \
+    # data.gen_batch_size=256 \
