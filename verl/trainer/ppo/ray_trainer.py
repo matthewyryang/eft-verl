@@ -654,7 +654,9 @@ class RayPPOTrainer:
         sample_gts = []
         sample_scores = []
         sample_turns = []
-
+        sample_indices = []
+        sample_splits = []
+        
         # difficulty
         difficulties = []
         lengths = []
@@ -738,26 +740,15 @@ class RayPPOTrainer:
             if "__num_turns__" in test_batch.non_tensor_batch:
                 sample_turns.append(test_batch.non_tensor_batch["__num_turns__"])
 
+            reward_tensor_lst.append(reward_tensor)
             data_source_lst.append(test_batch.non_tensor_batch.get("data_source", ["unknown"] * reward_tensor.shape[0]))
 
-            reward_tensor_lst.append(reward_tensor)
-            if 'level' in test_batch.non_tensor_batch:
-                difficulties.extend(list(test_batch.non_tensor_batch['level']))
-            else:
-                ref_rewards = list(test_batch.non_tensor_batch['reward'])
-                def return_difficulty(ref_model_reward):
-                    difficulty = 'unknown'
-                    if ref_model_reward > 10 / 16:
-                        difficulty = 'easy'
-                    elif ref_model_reward == 0:
-                        difficulty = 'hard'
-                    else:
-                        difficulty = 'medium'
-                    return difficulty
-                difficulties.extend([return_difficulty(ref_reward) for ref_reward in ref_rewards])
+            extra_info = test_batch.non_tensor_batch.get('extra_info')
+            sample_indices.extend([x['index'] for x in extra_info])
+            sample_splits.extend([x['split'] for x in extra_info])
+            
             lengths.extend(map(lambda text: len(self.tokenizer.encode(text)), output_texts))
 
-        self._maybe_log_val_generations(inputs=sample_inputs, outputs=sample_outputs, scores=sample_scores)
 
         # dump generations
         val_data_dir = self.config.trainer.get("validation_data_dir", None)
@@ -771,9 +762,7 @@ class RayPPOTrainer:
                 dump_path=val_data_dir,
             )
 
-        for key_info, lst in reward_extra_infos_dict.items():
-            assert len(lst) == 0 or len(lst) == len(sample_scores), f"{key_info}: {len(lst)=}, {len(sample_scores)=}"
-
+        self._maybe_log_val_generations(inputs=sample_inputs, outputs=sample_outputs, scores=sample_scores)
         data_sources = np.concatenate(data_source_lst, axis=0)
 
         # save rollouts
@@ -807,57 +796,32 @@ class RayPPOTrainer:
         data_source_length = defaultdict(list)
         data_source_0_length = defaultdict(list)
         data_source_1_length = defaultdict(list)
-        data_source_reward_by_difficulty = defaultdict(lambda: defaultdict(list))
-        data_source_length_by_difficulty = defaultdict(lambda: defaultdict(list))
-        data_source_0_length_by_difficulty = defaultdict(lambda: defaultdict(list))
-        data_source_1_length_by_difficulty = defaultdict(lambda: defaultdict(list))
         
         for i in range(reward_tensor.shape[0]):
             data_source = data_sources[i]
-            difficulty = difficulties[i]
             reward = reward_tensor[i].item()
 
             data_source_reward[data_source].append(reward)
-            data_source_reward_by_difficulty[data_source][difficulty].append(reward)
             
             data_source_length[data_source].append(lengths[i])
-            data_source_length_by_difficulty[data_source][difficulty].append(lengths[i])
 
             if reward == 0:
                 data_source_0_length[data_source].append(lengths[i])
-                data_source_0_length_by_difficulty[data_source][difficulty].append(lengths[i])
             elif reward == 1:
                 data_source_1_length[data_source].append(lengths[i])
-                data_source_1_length_by_difficulty[data_source][difficulty].append(lengths[i])
             else:
                 raise ValueError(f"reward must be 0 or 1, but got {reward}")
             
 
         metric_dict = {}
         for data_source, rewards in data_source_reward.items():
-            metric_dict[f"val/{data_source}/reward/mean"] = np.mean(rewards)
-            metric_dict[f"val/{data_source}/test_score/"] = np.mean(rewards)
-            metric_dict[f"val/{data_source}/length/mean"] = np.mean(data_source_length[data_source])
-            metric_dict[f"val/{data_source}/0_length/mean"] = np.mean(data_source_0_length[data_source]) if len(data_source_0_length[data_source]) > 0 else -1
-            metric_dict[f"val/{data_source}/1_length/mean"] = np.mean(data_source_1_length[data_source]) if len(data_source_1_length[data_source]) > 0 else -1            
+            metric_dict[f"val/{data_source}/reward"] = np.mean(rewards)
+            metric_dict[f"val/{data_source}/test_score"] = np.mean(rewards)
+            metric_dict[f"val/{data_source}/length"] = np.mean(data_source_length[data_source])
+            metric_dict[f"val/{data_source}/0_length"] = np.mean(data_source_0_length[data_source]) if len(data_source_0_length[data_source]) > 0 else -1
+            metric_dict[f"val/{data_source}/1_length"] = np.mean(data_source_1_length[data_source]) if len(data_source_1_length[data_source]) > 0 else -1            
             
-            for difficulty, per_difficulty_rewards in data_source_reward_by_difficulty[data_source].items():
-                metric_dict[f"val/{data_source}/reward/{difficulty}"] = np.mean(per_difficulty_rewards)
-                metric_dict[f"val/{data_source}/test_score/{difficulty}"] = np.mean(per_difficulty_rewards)
             
-            for difficulty, per_difficulty_lengths in data_source_length_by_difficulty[data_source].items():
-                metric_dict[f"val/{data_source}/length/{difficulty}"] = np.mean(per_difficulty_lengths)
-            
-            for difficulty in data_source_length_by_difficulty[data_source].keys():
-                per_difficulty_lengths = data_source_0_length_by_difficulty[data_source][difficulty]
-                mean_incorrect_length = np.mean(per_difficulty_lengths) if len(per_difficulty_lengths) > 0 else -1
-                metric_dict[f"val/{data_source}/0_length/{difficulty}"] = mean_incorrect_length
-            
-            for difficulty in data_source_length_by_difficulty[data_source].keys():
-                per_difficulty_lengths = data_source_1_length_by_difficulty[data_source][difficulty]
-                mean_correct_length = np.mean(per_difficulty_lengths) if len(per_difficulty_lengths) > 0 else -1
-                metric_dict[f"val/{data_source}/1_length/{difficulty}"] = mean_correct_length
-        
         # data_src2var2metric2val = process_validation_metrics(data_sources, sample_inputs, reward_extra_infos_dict)
         # for data_source, var2metric2val in data_src2var2metric2val.items():
         #     core_var = "acc" if "acc" in var2metric2val else "reward"

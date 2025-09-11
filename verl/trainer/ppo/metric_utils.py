@@ -247,79 +247,63 @@ def compute_data_metrics(batch: DataProto, use_critic: bool = True, tokenizer: a
         verification_cnts.append(check_number_of_verification(response_str))
 
     # add metrics by difficulty
-    correct_verifications_by_difficulty = defaultdict(list)
-    incorrect_verifications_by_difficulty = defaultdict(list)
-    correct_lengths_by_difficulty = defaultdict(list)
-    incorrect_lengths_by_difficulty = defaultdict(list)
-    rewards_by_difficulty = defaultdict(list)
-    zero_advantage_ratio_by_difficulty = defaultdict(list)
-    zero_advantage_and_reward_0_ratio_by_difficulty = defaultdict(list)
-    zero_advantage_and_reward_1_ratio_by_difficulty = defaultdict(list)
+    correct_verifications = []
+    incorrect_verifications = []
+    correct_lengths = []
+    incorrect_lengths = []
+    rewards = []
+    zero_advantage_ratio = []
+    zero_advantage_and_reward_0_ratio = []
+    zero_advantage_and_reward_1_ratio = []
 
-    if 'level' not in batch.non_tensor_batch:
-        diffulties = []
-        for ref_model_reward, reward, length, v_cnt in zip(batch.non_tensor_batch['reward'], sequence_reward, response_length, verification_cnts):
-            binary_reward = 1 if reward > 0.9 else 0
-            
-            difficulty = 'unknown'
-            if ref_model_reward > 10 / 16:
-                difficulty = 'easy'
-            elif ref_model_reward == 0:
-                difficulty = 'hard'
-            else:
-                difficulty = 'medium'
 
-            diffulties.append(difficulty)
-    else:
-        diffulties = batch.non_tensor_batch['level']
-
-    for difficulty, reward, length, v_cnt, adv, mask in zip(diffulties, sequence_reward, response_length, verification_cnts, advantages, response_mask):
+    for reward, length, v_cnt, adv, mask in zip(sequence_reward, response_length, verification_cnts, advantages, response_mask):
         binary_reward = 1 if reward > 0.9 else 0
         
-        rewards_by_difficulty[difficulty].append(binary_reward)
+        rewards.append(binary_reward)
         if binary_reward == 1:
-            correct_lengths_by_difficulty[difficulty].append(length.detach().item())
-            correct_verifications_by_difficulty[difficulty].append(v_cnt)
+            correct_lengths.append(length.detach().item())
+            correct_verifications.append(v_cnt)
         else:
-            incorrect_lengths_by_difficulty[difficulty].append(length.detach().item())
-            incorrect_verifications_by_difficulty[difficulty].append(v_cnt)
+            incorrect_lengths.append(length.detach().item())
+            incorrect_verifications.append(v_cnt)
     
-        zero_advantage_ratio_by_difficulty[difficulty].append(adv[0] == 0.)
-        zero_advantage_and_reward_0_ratio_by_difficulty[difficulty].append(adv[0] == 0. and binary_reward == 0)
-        zero_advantage_and_reward_1_ratio_by_difficulty[difficulty].append(adv[0] == 0. and binary_reward == 1)
+        zero_advantage_ratio.append(adv[0] == 0.)
+        zero_advantage_and_reward_0_ratio.append(adv[0] == 0. and binary_reward == 0)
+        zero_advantage_and_reward_1_ratio.append(adv[0] == 0. and binary_reward == 1)
 
-    for difficulty in rewards_by_difficulty:
-        mean_reward = np.mean(rewards_by_difficulty[difficulty])
-        mean_length = np.mean(correct_lengths_by_difficulty[difficulty] + incorrect_lengths_by_difficulty[difficulty])
-        mean_v_cnt = np.mean(correct_verifications_by_difficulty[difficulty] + incorrect_verifications_by_difficulty[difficulty])
+    mean_reward = np.mean(rewards)
+    mean_length = np.mean(correct_lengths + incorrect_lengths)
+    mean_v_cnt = np.mean(correct_verifications + incorrect_verifications)
         
-        if len(correct_lengths_by_difficulty[difficulty]) > 0:
-            mean_correct_length = np.mean(correct_lengths_by_difficulty[difficulty])
-            mean_correct_v_cnt = np.mean(correct_verifications_by_difficulty[difficulty])
-        else:
-            mean_correct_length = -1
-            mean_correct_v_cnt = -1
+    if len(correct_lengths) > 0:
+        mean_correct_length = np.mean(correct_lengths)
+        mean_correct_v_cnt = np.mean(correct_verifications)
         
-        if len(incorrect_lengths_by_difficulty[difficulty]) > 0:
-            mean_incorrect_length = np.mean(incorrect_lengths_by_difficulty[difficulty])
-            mean_incorrect_v_cnt = np.mean(incorrect_verifications_by_difficulty[difficulty])
-        else:
-            mean_incorrect_length = -1
-            mean_incorrect_v_cnt = -1
-        
-        metrics[f'difficulty/reward/{difficulty}'] = mean_reward
-        
-        metrics[f'difficulty/0_length/{difficulty}'] = mean_incorrect_length
-        metrics[f'difficulty/1_length/{difficulty}'] = mean_correct_length
-        metrics[f'difficulty/length/{difficulty}'] = mean_length
-        
-        metrics[f'difficulty/0_verification/{difficulty}'] = mean_incorrect_v_cnt
-        metrics[f'difficulty/1_verification/{difficulty}'] = mean_correct_v_cnt
-        metrics[f'difficulty/verification/{difficulty}'] = mean_v_cnt
+    else:
+        mean_correct_length = -1
+        mean_correct_v_cnt = -1
+    
+    if len(incorrect_lengths) > 0:
+        mean_incorrect_length = np.mean(incorrect_lengths)
+        mean_incorrect_v_cnt = np.mean(incorrect_verifications)
+    else:
+        mean_incorrect_length = -1
+        mean_incorrect_v_cnt = -1
+    
+    metrics[f'info/reward'] = mean_reward
+    
+    metrics[f'info/0_length'] = mean_incorrect_length
+    metrics[f'info/1_length'] = mean_correct_length
+    metrics[f'info/length'] = mean_length
+    
+    metrics[f'info/0_verification'] = mean_incorrect_v_cnt
+    metrics[f'info/1_verification'] = mean_correct_v_cnt
+    metrics[f'info/verification'] = mean_v_cnt
 
-        metrics[f'difficulty/zero_advantage_ratio/{difficulty}'] = np.mean(zero_advantage_ratio_by_difficulty[difficulty])
-        metrics[f'difficulty/zero_advantage_and_reward_0_ratio/{difficulty}'] = np.mean(zero_advantage_and_reward_0_ratio_by_difficulty[difficulty])
-        metrics[f'difficulty/zero_advantage_and_reward_1_ratio/{difficulty}'] = np.mean(zero_advantage_and_reward_1_ratio_by_difficulty[difficulty])
+    metrics[f'info/zero_advantage_ratio'] = np.mean(zero_advantage_ratio)
+    metrics[f'info/zero_advantage_and_reward_0_ratio'] = np.mean(zero_advantage_and_reward_0_ratio)
+    metrics[f'info/zero_advantage_and_reward_1_ratio'] = np.mean(zero_advantage_and_reward_1_ratio)
 
     return metrics
 

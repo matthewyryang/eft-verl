@@ -132,7 +132,7 @@ def generate_config_from_args(args: argparse.Namespace) -> ModelMergerConfig:
         "trust_remote_code": args.trust_remote_code,
         "is_value_model": args.is_value_model,
         "local_dir": args.local_dir,
-        "hf_model_config_path": os.path.join(args.local_dir, "huggingface"),
+        "hf_model_config_path": args.local_dir,
         "use_cpu_initialization": args.use_cpu_initialization,
     }
 

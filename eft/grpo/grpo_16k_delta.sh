@@ -1,20 +1,20 @@
 #!/bin/bash
 
-export VLLM_ATTENTION_BACKEND=FLASH_ATTN
+export VLLM_ATTENTION_BACKEND=XFORMERS
 export TRITON_CACHE_DIR=/tmp/triton_cache
 mkdir -p $TRITON_CACHE_DIR
 
 source /projects/bffc/myang13/miniconda3/bin/activate verl
 
-cd /home1/10913/myang13/verl
-EXPERIMENT_NAME=test-e3-1.7B-multinode
+cd /u/myang13/eft-verl
+EXPERIMENT_NAME=hint
 MODEL_PATH=/projects/bffc/myang13/Qwen3-4B
 
 PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     algorithm.adv_estimator=grpo \
-    data.train_files=/projects/bffc/myang13/data/e3-math-medhard-zero-accuracy.parquet \
+    data.train_files=/projects/bffc/myang13/data/hint.parquet \
     data.val_files=/projects/bffc/myang13/data/hmmt-aime-2025.parquet \
-    data.train_batch_size=64 \
+    data.train_batch_size=32 \
     data.max_prompt_length=1024 \
     data.max_response_length=16384 \
     data.filter_overlong_prompts=True \
@@ -41,8 +41,8 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     actor_rollout_ref.rollout.gpu_memory_utilization=0.85 \
     actor_rollout_ref.rollout.max_num_batched_tokens=20000 \
     actor_rollout_ref.rollout.n=32 \
-    actor_rollout_ref.rollout.val_kwargs.n=32 \
-    actor_rollout_ref.ref.fsdp_config.param_offload=True \
+    actor_rollout_ref.rollout.val_kwargs.n=16 \
+    actor_rollout_ref.ref.fsdp_config.param_offload=False \
     actor_rollout_ref.rollout.enforce_eager=False \
     actor_rollout_ref.rollout.free_cache_engine=False \
     actor_rollout_ref.actor.ulysses_sequence_parallel_size=2 \
@@ -56,11 +56,11 @@ PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \
     trainer.logger=['console','wandb'] \
     trainer.project_name=e3-rl \
     trainer.experiment_name=$EXPERIMENT_NAME \
-    trainer.n_gpus_per_node=1 \
-    trainer.nnodes=16 \
-    trainer.save_freq=-1 \
-    trainer.test_freq=30 \
-    trainer.total_epochs=1 "${@:1}" > /u/myang13/eft-verl/logs/$EXPERIMENT_NAME.log 2>&1
+    trainer.n_gpus_per_node=4 \
+    trainer.nnodes=4 \
+    trainer.save_freq=50 \
+    trainer.test_freq=-1 \
+    trainer.total_epochs=100 "${@:1}" > /u/myang13/eft-verl/logs/$EXPERIMENT_NAME.log 2>&1
 
 
     # to enable DAPO Dyanmic Sampling...

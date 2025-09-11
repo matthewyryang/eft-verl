@@ -1,20 +1,25 @@
 #!/bin/bash
-#SBATCH --mem=1024G
-#SBATCH --nodes=4
-#SBATCH --ntasks-per-node=1
-#SBATCH --ntasks-per-socket=1
-#SBATCH --cpus-per-task=16
+#SBATCH --job-name="finetune"
 #SBATCH --partition=ghx4
-#SBATCH --time=48:00:00
-#SBATCH --account=bffc-dtai-gh
+#SBATCH --mem=0
+#SBATCH --nodes=4
+#SBATCH --ntasks-per-node=1  # could be 1 for py-torch
+#SBATCH --cpus-per-task=64   # spread out to use 1 core per numa, set to 64 if tasks is 1
 #SBATCH --gpus-per-node=4
-#SBATCH --gpu-bind=verbose,closest
+#SBATCH --gpu-bind=closest   # select a cpu close to gpu on pci bus topology
+#SBATCH --account=bfgz-dtai-gh
+#SBATCH --exclusive  # dedicated node for this job
+#SBATCH --no-requeue
+#SBATCH -t 48:00:00
+#SBATCH --output=slurm-ray-%j.out
+#SBATCH --error=slurm-ray-%j.err  # Good practice for separate error logs
+#SBATCH --nodelist=gh011,gh020,gh028,gh036
 
 
 # --- Configuration ---
 RAY_PORT=6379            # Default Ray port 6379
 RAY_DASHBOARD_PORT=8265 # Default Ray dashboard port 8265
-JOB_WORKING_DIR="/home1/10913/myang13/verl"
+JOB_WORKING_DIR="/u/myang13/eft-verl"
 JOB_SCRIPT_NAME="$JOB_WORKING_DIR/eft/grpo/grpo_16k_delta.sh"
 
 # --- Setup ---
@@ -47,7 +52,7 @@ echo "--------------------"
 # --- Start Ray Head Node ---
 echo "Starting Ray head node on $head_node..."
 srun --export=ALL --nodes=1 --ntasks=1 -w "$head_node" \
-    /work/10913/myang13/miniconda3/envs/verl2/bin/ray start --head --node-ip-address="$head_node_ip" --port=$RAY_PORT --dashboard-host=0.0.0.0 --dashboard-port=$RAY_DASHBOARD_PORT \
+    /projects/bffc/myang13/miniconda3/envs/verl/bin/ray start --head --node-ip-address="$head_node_ip" --port=$RAY_PORT --dashboard-host=0.0.0.0 --dashboard-port=$RAY_DASHBOARD_PORT \
     --block &
 head_pid=$! # Store PID if needed for explicit kill later (optional)
 echo "Ray head node PID: $head_pid"
@@ -60,7 +65,7 @@ worker_pids=()
 for worker_node in "${worker_nodes[@]}"; do
     echo "Starting worker on $worker_node"
     srun --export=ALL --nodes=1 --ntasks=1 -w "$worker_node" \
-        /work/10913/myang13/miniconda3/envs/verl2/bin/ray start --address="$head_node_ip:$RAY_PORT" \
+        /projects/bffc/myang13/miniconda3/envs/verl/bin/ray start --address="$head_node_ip:$RAY_PORT" \
         --block &
     worker_pids+=($!) # Store worker PIDs (optional)
     # Optional: sleep briefly between starting workers if needed
@@ -68,21 +73,31 @@ for worker_node in "${worker_nodes[@]}"; do
 done
 echo "Ray worker PIDs: ${worker_pids[@]}"
 
-# Wait a bit longer to ensure workers have connected and registered
-echo "Waiting for cluster to form completely..."
-sleep 20 # Increased sleep time, adjust as needed
+# # Wait a bit longer to ensure workers have connected and registered
+# echo "Waiting for cluster to form completely..."
+# sleep 20 # Increased sleep time, adjust as needed
+
+echo "Waiting for Ray dashboard to be ready at $head_node_ip:$RAY_DASHBOARD_PORT..."
+
+# Loop until the dashboard port is open and listening
+while ! nc -z $head_node_ip $RAY_DASHBOARD_PORT; do
+  echo "Dashboard not ready yet, waiting 2 seconds..."
+  sleep 2
+done
+
+echo "Ray dashboard is ready at $head_node_ip:$RAY_DASHBOARD_PORT"
 
 # --- Optional: Check Cluster Status ---
 echo "Checking Ray cluster status..."
 # Run status check directly, as srun might still fail here if nodes are busy initializing
-/work/10913/myang13/miniconda3/envs/verl2/bin/ray status || echo "WARNING: Ray status check failed or cluster not fully ready yet."
+/projects/bffc/myang13/miniconda3/envs/verl/bin/ray status || echo "WARNING: Ray status check failed or cluster not fully ready yet."
 sleep 5
 
 
 # --- Submit Ray Job ---
 echo "Submitting Ray job: $JOB_SCRIPT_NAME from $JOB_WORKING_DIR"
 
-/work/10913/myang13/miniconda3/envs/verl2/bin/ray job submit --address="http://$head_node_ip:$RAY_DASHBOARD_PORT" \
+/projects/bffc/myang13/miniconda3/envs/verl/bin/ray job submit --address="http://$head_node_ip:$RAY_DASHBOARD_PORT" \
   --no-wait \
   --runtime-env $JOB_WORKING_DIR/eft/runtime_env.yaml \
   -- sh -c "exec bash $JOB_SCRIPT_NAME"
