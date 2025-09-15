@@ -25,7 +25,7 @@ if __name__ == '__main__':
         
     print(f"Loaded dataset with {len(dataset)} examples.")
 
-    def make_map_fn(split: str, with_hint=False):
+    def make_map_fn(split: str):
         """Create a mapping function to process dataset examples.
 
         Args:
@@ -37,12 +37,9 @@ if __name__ == '__main__':
         def process_fn(example: Dict[str, Any], idx: int) -> Optional[Dict[str, Any]]:
             data = {
                 "data_source": "",
-                "prompt": example['problem_prompt' if not with_hint else 'problem_with_hint_prompt'],
+                "prompt": example['prompt'],
                 "ability": "math",
-                "reward_model": {
-                    "style": "rule",
-                    "ground_truth": example['answer']
-                },
+                "reward_model": example['reward_model'],
                 "extra_info": {
                     'split': split,
                     'index': idx
@@ -50,14 +47,8 @@ if __name__ == '__main__':
             }
             return data
         return process_fn
-    
+
     dataset = dataset.map(function=make_map_fn(args.split), with_indices=True)
-    hint_dataset = dataset.map(function=make_map_fn(args.split, with_hint=True), with_indices=True)
-    print(dataset[0]['prompt'])
-    print(dataset[0]['reward_model'])
-    print(hint_dataset[0]['prompt'])
-    print(hint_dataset[0]['reward_model'])
-    dataset = concatenate_datasets([dataset, hint_dataset])
     print(f"Loaded dataset with {len(dataset)} examples.")
 
 

@@ -8,9 +8,9 @@ mkdir -p $TRITON_CACHE_DIR
 source /projects/bffc/myang13/miniconda3/bin/activate verl
 
 cd /u/myang13/eft-verl
-EXPERIMENT_NAME=qwen3-eft-no-suffix-new
+EXPERIMENT_NAME=qwen3-gemini
 # MODEL_PATH=/projects/bffc/myang13/Qwen3-4B
-MODEL_PATH=/projects/bffc/myang13/qwen3-eft-no_suffix-lr-1e-6/checkpoint-92
+MODEL_PATH=/projects/bffc/myang13/qwen3-gemini/checkpoint-105
 # MODEL_PATH=/projects/bffc/myang13/qwen3-eft-with_suffix-lr-1e-6/checkpoint-200
 
 PYTHONUNBUFFERED=1 python3 -m verl.trainer.main_ppo \

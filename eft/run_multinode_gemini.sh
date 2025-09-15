@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name="finetune"
+#SBATCH --job-name="finetune-gemini"
 #SBATCH --partition=ghx4
 #SBATCH --mem=0
 #SBATCH --nodes=4
@@ -13,13 +13,13 @@
 #SBATCH -t 48:00:00
 #SBATCH --output=slurm-ray-%j.out
 #SBATCH --error=slurm-ray-%j.err  # Good practice for separate error logs
-#SBATCH --nodelist=gh142,gh147,gh149,gh150
+#SBATCH --nodelist=gh065,gh073,gh081,gh094
 
 # --- Configuration ---
 RAY_PORT=6379            # Default Ray port 6379
 RAY_DASHBOARD_PORT=8265 # Default Ray dashboard port 8265
 JOB_WORKING_DIR="/u/myang13/eft-verl"
-JOB_SCRIPT_NAME="$JOB_WORKING_DIR/eft/grpo/grpo_16k_delta.sh"
+JOB_SCRIPT_NAME="$JOB_WORKING_DIR/eft/grpo/grpo_16k_gemini.sh"
 
 # --- Setup ---
 echo "Running on nodes: $SLURM_JOB_NODELIST"
