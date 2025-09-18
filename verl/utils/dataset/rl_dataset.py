@@ -125,7 +125,7 @@ class RLHFDataset(Dataset):
         self.from_hf_hub = from_hf_hub
 
         if self.from_hf_hub:
-            assert isinstance(self.data_files, str, "data_files must be str if from_hf_hub")
+            assert isinstance(self.data_files, str)
             self.dataframe = datasets.load_dataset(self.data_files, split=hf_split)
             print(f"dataset len: {len(self.dataframe)}")
             self.dataframe = self.maybe_filter_out_long_prompts(self.dataframe)
