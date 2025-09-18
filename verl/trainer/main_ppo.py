@@ -324,12 +324,25 @@ def create_rl_dataset(data_paths, data_config, tokenizer, processor, is_train=Tr
         dataset_cls = RLHFDataset
     print(f"Using dataset class: {dataset_cls.__name__}")
 
+    if is_train:
+        apply_chat_template = data_config.get("apply_chat_template_train", True)
+        hf_split = data_config.get("train_split_name", "train")
+    else:
+        apply_chat_template = data_config.get("apply_chat_template_val", True)
+        hf_split = data_config.get("val_split_name", "test")
+
+    from_hf_hub = data_config.get("from_hf_hub", False)
+
+
     # Instantiate the dataset using the determined dataset class
     dataset = dataset_cls(
         data_files=data_paths,
         tokenizer=tokenizer,
         processor=processor,
         config=data_config,
+        hf_split=hf_split,
+        apply_chat_template=apply_chat_template,
+        from_hf_hub=from_hf_hub
     )
 
     return dataset

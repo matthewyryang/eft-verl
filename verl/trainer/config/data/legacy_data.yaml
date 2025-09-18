@@ -19,6 +19,17 @@ prompt_key: prompt
 # The field used to select the reward function (if using different ones per example).
 reward_fn_key: data_source
 
+# [Ian edit] Apply chat template to prompts.
+apply_chat_template_train: True
+apply_chat_template_val: True
+
+# [Ian edit] Get train and test files from HF datasets
+from_hf_hub: False
+
+train_split_name: train
+
+val_split_name: test
+
 # Maximum prompt length. All prompts will be left-padded to this length.
 # An error will be reported if the length is too long.
 # oc.select: default val for rollout.prompt_length

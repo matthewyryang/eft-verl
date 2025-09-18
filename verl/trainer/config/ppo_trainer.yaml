@@ -247,10 +247,10 @@ trainer:
   del_local_ckpt_after_load: False
 
   # Default local directory for saving checkpoints
-  default_local_dir: /projects/bffc/myang13/${trainer.project_name}/${trainer.experiment_name}
+  default_local_dir: /projects/bffc/iwu2/${trainer.project_name}/${trainer.experiment_name}
 
   # Maximum number of actor checkpoints to keep
-  max_actor_ckpt_to_keep: null
+  max_actor_ckpt_to_keep: 2
 
   # Maximum number of critic checkpoints to keep
   max_critic_ckpt_to_keep: null
