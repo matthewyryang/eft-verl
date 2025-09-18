@@ -17,7 +17,7 @@ ray job submit --address="http://172.28.80.117:8265" \
     data.apply_chat_template_train=False \
     data.apply_chat_template_val=True \
     data.filter_overlong_prompts=True \
-    actor_rollout_ref.model.path=e3-prefix-16k \
+    actor_rollout_ref.model.path=CMU-AIRe/e3-1.7B \
     actor_rollout_ref.actor.optim.lr=1e-6 \
     actor_rollout_ref.model.use_remove_padding=True \
     actor_rollout_ref.actor.clip_ratio_low=0.2 \
@@ -62,6 +62,5 @@ ray job submit --address="http://172.28.80.117:8265" \
     trainer.save_freq=50 \
     trainer.test_freq=-1 \
     trainer.total_epochs=100 \
-    data.apply_chat_template=False \
     data.from_hf_hub=True
 "
