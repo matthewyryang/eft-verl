@@ -260,7 +260,6 @@ def compute_data_metrics(batch: DataProto, use_critic: bool = True, tokenizer: a
     zero_advantage_and_reward_0_ratio = []
     zero_advantage_and_reward_1_ratio = []
 
-
     for reward, length, v_cnt, adv, mask in zip(sequence_reward, response_length, verification_cnts, advantages, response_mask):
         binary_reward = 1 if reward > 0.9 else 0
         
@@ -308,6 +307,66 @@ def compute_data_metrics(batch: DataProto, use_critic: bool = True, tokenizer: a
     metrics[f'info/zero_advantage_ratio'] = np.mean(zero_advantage_ratio)
     metrics[f'info/zero_advantage_and_reward_0_ratio'] = np.mean(zero_advantage_and_reward_0_ratio)
     metrics[f'info/zero_advantage_and_reward_1_ratio'] = np.mean(zero_advantage_and_reward_1_ratio)
+
+    ### --- START --- Ian's edits ---
+    ability = batch.non_tensor_batch["ability"]
+    prefix_indices = [i for i, ab in enumerate(ability) if ab == "prefix"]
+    intervention_indices = [i for i, ab in enumerate(ability) if ab == "prefix_intervention"]
+
+    print(f"prefix_indices: {prefix_indices}")
+    print(f"intervention_indices: {intervention_indices}")
+
+    prefix_score = sequence_score[prefix_indices]
+    intervention_score = sequence_score[intervention_indices]
+    prefix_reward = sequence_reward[prefix_indices]
+    intervention_reward = sequence_reward[intervention_indices]
+
+    print(f"prefix_score: {prefix_score}")
+    print("=" * 100)
+
+    prefix_score_mean = torch.mean(prefix_score).detach().item()
+    intervention_score_mean = torch.mean(intervention_score).detach().item()
+    prefix_score_max = torch.max(prefix_score).detach().item()
+    intervention_score_max = torch.max(intervention_score).detach().item()
+    prefix_score_min = torch.min(prefix_score).detach().item()
+    intervention_score_min = torch.min(intervention_score).detach().item()
+
+    prefix_reward_mean = torch.mean(prefix_reward).detach().item()
+    intervention_reward_mean = torch.mean(intervention_reward).detach().item()
+    prefix_reward_max = torch.max(prefix_reward).detach().item()
+    intervention_reward_max = torch.max(intervention_reward).detach().item()
+    prefix_reward_min = torch.min(prefix_reward).detach().item()
+    intervention_reward_min = torch.min(intervention_reward).detach().item()
+
+    prefix_zero_advantage_ratio = np.mean(zero_advantage_ratio[prefix_indices])
+    intervention_zero_advantage_ratio = np.mean(zero_advantage_ratio[intervention_indices])
+    prefix_zero_advantage_and_reward_0_ratio = np.mean(zero_advantage_and_reward_0_ratio[prefix_indices])
+    intervention_zero_advantage_and_reward_0_ratio = np.mean(zero_advantage_and_reward_0_ratio[intervention_indices])
+    prefix_zero_advantage_and_reward_1_ratio = np.mean(zero_advantage_and_reward_1_ratio[prefix_indices])
+    intervention_zero_advantage_and_reward_1_ratio = np.mean(zero_advantage_and_reward_1_ratio[intervention_indices])
+
+    metrics[f'info/prefix_zero_advantage_ratio'] = prefix_zero_advantage_ratio
+    metrics[f'info/intervention_zero_advantage_ratio'] = intervention_zero_advantage_ratio
+    metrics[f'info/prefix_zero_advantage_and_reward_0_ratio'] = prefix_zero_advantage_and_reward_0_ratio
+    metrics[f'info/intervention_zero_advantage_and_reward_0_ratio'] = intervention_zero_advantage_and_reward_0_ratio
+    metrics[f'info/prefix_zero_advantage_and_reward_1_ratio'] = prefix_zero_advantage_and_reward_1_ratio
+    metrics[f'info/intervention_zero_advantage_and_reward_1_ratio'] = intervention_zero_advantage_and_reward_1_ratio
+
+    metrics[f'critic/prefix_score/mean'] = prefix_score_mean
+    metrics[f'critic/intervention_score/mean'] = intervention_score_mean
+    metrics[f'critic/prefix_score/max'] = prefix_score_max
+    metrics[f'critic/intervention_score/max'] = intervention_score_max
+    metrics[f'critic/prefix_score/min'] = prefix_score_min
+    metrics[f'critic/intervention_score/min'] = intervention_score_min
+
+    metrics[f'critic/prefix_reward/mean'] = prefix_reward_mean
+    metrics[f'critic/intervention_reward/mean'] = intervention_reward_mean
+    metrics[f'critic/prefix_reward/max'] = prefix_reward_max
+    metrics[f'critic/intervention_reward/max'] = intervention_reward_max
+    metrics[f'critic/prefix_reward/min'] = prefix_reward_min
+    metrics[f'critic/intervention_reward/min'] = intervention_reward_min
+
+    ### --- END --- Ian's edits ---
 
     return metrics
 
