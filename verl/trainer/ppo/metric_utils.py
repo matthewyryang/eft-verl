@@ -316,35 +316,41 @@ def compute_data_metrics(batch: DataProto, use_critic: bool = True, tokenizer: a
     print(f"prefix_indices: {prefix_indices}")
     print(f"intervention_indices: {intervention_indices}")
 
-    prefix_score = sequence_score[prefix_indices]
-    intervention_score = sequence_score[intervention_indices]
-    prefix_reward = sequence_reward[prefix_indices]
-    intervention_reward = sequence_reward[intervention_indices]
+    def safe_stats(tensor: torch.Tensor, indices: list[int]):
+        """Return (mean, max, min) or (0, 0, 0) if indices are empty."""
+        if len(indices) == 0:
+            return 0.0, 0.0, 0.0
+        selected = tensor[indices]
+        return (
+            torch.mean(selected).detach().item(),
+            torch.max(selected).detach().item(),
+            torch.min(selected).detach().item(),
+        )
 
-    print(f"prefix_score: {prefix_score}")
-    print("=" * 100)
+    def safe_mean_from_list(values: list[float], indices: list[int]):
+        """Return mean over given indices or 0 if indices are empty."""
+        if len(indices) == 0:
+            return 0.0
+        selected = [values[i] for i in indices]
+        return float(np.mean(selected))
 
-    prefix_score_mean = torch.mean(prefix_score).detach().item()
-    intervention_score_mean = torch.mean(intervention_score).detach().item()
-    prefix_score_max = torch.max(prefix_score).detach().item()
-    intervention_score_max = torch.max(intervention_score).detach().item()
-    prefix_score_min = torch.min(prefix_score).detach().item()
-    intervention_score_min = torch.min(intervention_score).detach().item()
+    # Scores
+    prefix_score_mean, prefix_score_max, prefix_score_min = safe_stats(sequence_score, prefix_indices)
+    intervention_score_mean, intervention_score_max, intervention_score_min = safe_stats(sequence_score, intervention_indices)
 
-    prefix_reward_mean = torch.mean(prefix_reward).detach().item()
-    intervention_reward_mean = torch.mean(intervention_reward).detach().item()
-    prefix_reward_max = torch.max(prefix_reward).detach().item()
-    intervention_reward_max = torch.max(intervention_reward).detach().item()
-    prefix_reward_min = torch.min(prefix_reward).detach().item()
-    intervention_reward_min = torch.min(intervention_reward).detach().item()
+    # Rewards
+    prefix_reward_mean, prefix_reward_max, prefix_reward_min = safe_stats(sequence_reward, prefix_indices)
+    intervention_reward_mean, intervention_reward_max, intervention_reward_min = safe_stats(sequence_reward, intervention_indices)
 
-    prefix_zero_advantage_ratio = np.mean(zero_advantage_ratio[prefix_indices])
-    intervention_zero_advantage_ratio = np.mean(zero_advantage_ratio[intervention_indices])
-    prefix_zero_advantage_and_reward_0_ratio = np.mean(zero_advantage_and_reward_0_ratio[prefix_indices])
-    intervention_zero_advantage_and_reward_0_ratio = np.mean(zero_advantage_and_reward_0_ratio[intervention_indices])
-    prefix_zero_advantage_and_reward_1_ratio = np.mean(zero_advantage_and_reward_1_ratio[prefix_indices])
-    intervention_zero_advantage_and_reward_1_ratio = np.mean(zero_advantage_and_reward_1_ratio[intervention_indices])
+    # Zero advantage ratios (lists)
+    prefix_zero_advantage_ratio = safe_mean_from_list(zero_advantage_ratio, prefix_indices)
+    intervention_zero_advantage_ratio = safe_mean_from_list(zero_advantage_ratio, intervention_indices)
+    prefix_zero_advantage_and_reward_0_ratio = safe_mean_from_list(zero_advantage_and_reward_0_ratio, prefix_indices)
+    intervention_zero_advantage_and_reward_0_ratio = safe_mean_from_list(zero_advantage_and_reward_0_ratio, intervention_indices)
+    prefix_zero_advantage_and_reward_1_ratio = safe_mean_from_list(zero_advantage_and_reward_1_ratio, prefix_indices)
+    intervention_zero_advantage_and_reward_1_ratio = safe_mean_from_list(zero_advantage_and_reward_1_ratio, intervention_indices)
 
+    # Metrics
     metrics[f'info/prefix_zero_advantage_ratio'] = prefix_zero_advantage_ratio
     metrics[f'info/intervention_zero_advantage_ratio'] = intervention_zero_advantage_ratio
     metrics[f'info/prefix_zero_advantage_and_reward_0_ratio'] = prefix_zero_advantage_and_reward_0_ratio
@@ -365,6 +371,9 @@ def compute_data_metrics(batch: DataProto, use_critic: bool = True, tokenizer: a
     metrics[f'critic/intervention_reward/max'] = intervention_reward_max
     metrics[f'critic/prefix_reward/min'] = prefix_reward_min
     metrics[f'critic/intervention_reward/min'] = intervention_reward_min
+
+    metrics[f'info/num_prefix'] = len(prefix_indices)
+    metrics[f'info/num_intervention'] = len(intervention_indices)
 
     ### --- END --- Ian's edits ---
 
