@@ -110,10 +110,6 @@ def compute_data_metrics(batch: DataProto, use_critic: bool = True, tokenizer: a
             - prompt_length/mean, max, min, clip_ratio: Statistics about prompt lengths
             - num_turns/mean, max, min: Statistics about the number of multi-turn conversations
     """
-    print("*" * 100)
-    print("BATCH IN METRIC UTILS")
-    print(batch)
-    print("--------------------------------")
     sequence_score = batch.batch["token_level_scores"].sum(-1)
     sequence_reward = batch.batch["token_level_rewards"].sum(-1)
 
@@ -312,9 +308,6 @@ def compute_data_metrics(batch: DataProto, use_critic: bool = True, tokenizer: a
     ability = batch.non_tensor_batch["ability"]
     prefix_indices = [i for i, ab in enumerate(ability) if ab == "prefix"]
     intervention_indices = [i for i, ab in enumerate(ability) if ab == "prefix_intervention"]
-
-    print(f"prefix_indices: {prefix_indices}")
-    print(f"intervention_indices: {intervention_indices}")
 
     def safe_stats(tensor: torch.Tensor, indices: list[int]):
         """Return (mean, max, min) or (0, 0, 0) if indices are empty."""
