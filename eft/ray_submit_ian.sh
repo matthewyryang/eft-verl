@@ -69,7 +69,7 @@ ray job submit --address="http://172.28.80.117:8265" \
 
 python3 -m verl.trainer.main_ppo \
     algorithm.adv_estimator=grpo \
-    data.train_files=HerrHruby/interventions_e3_prefix_RL \
+    data.train_files=HerrHruby/interventions_qwen3_4b_inst_nothink_prefix_RL \
     data.val_files=CMU-AIRe/hmmt-aime-2025 \
     data.train_batch_size=32 \
     data.max_prompt_length=4096 \
@@ -80,11 +80,11 @@ python3 -m verl.trainer.main_ppo \
     data.apply_chat_template_train=False \
     data.apply_chat_template_val=True \
     data.filter_overlong_prompts=True \
-    actor_rollout_ref.model.path=CMU-AIRe/e3-1.7B \
+    actor_rollout_ref.model.path=Qwen/Qwen3-4B-Instruct-2507 \
     actor_rollout_ref.actor.optim.lr=1e-6 \
     actor_rollout_ref.model.use_remove_padding=True \
     actor_rollout_ref.actor.clip_ratio_low=0.2 \
-    actor_rollout_ref.actor.clip_ratio_high=0.35 \
+    actor_rollout_ref.actor.clip_ratio_high=0.3 \
     actor_rollout_ref.actor.ppo_mini_batch_size=16 \
     actor_rollout_ref.actor.use_dynamic_bsz=True \
     actor_rollout_ref.actor.ppo_max_token_len_per_gpu=22000 \
@@ -119,9 +119,9 @@ python3 -m verl.trainer.main_ppo \
     trainer.critic_warmup=0 \
     trainer.logger=['console','wandb'] \
     trainer.project_name=interventions \
-    trainer.experiment_name=e3-prefix-16k \
-    trainer.n_gpus_per_node=8 \
-    trainer.nnodes=1 \
+    trainer.experiment_name=interventions_qwen3_4b_inst_prefix_RL \
+    trainer.n_gpus_per_node=4 \
+    trainer.nnodes=4 \
     trainer.save_freq=50 \
     trainer.test_freq=-1 \
     trainer.total_epochs=100 \
