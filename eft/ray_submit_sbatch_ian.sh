@@ -15,7 +15,7 @@
 source /u/iwu2/anaconda3/bin/activate
 conda activate verl
 
-export WANDB_API_KEY="4196f642cf78c50eddd6201323ab4b2379bf6380"
+export WANDB_API_KEY="<KEY>"
 #export WANDB_ENTITY=yuxiao98
 export WANDB_PROJECT=interventions
 
