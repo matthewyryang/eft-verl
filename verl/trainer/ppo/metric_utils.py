@@ -307,7 +307,7 @@ def compute_data_metrics(batch: DataProto, use_critic: bool = True, tokenizer: a
     ### --- START --- Ian's edits ---
     ability = batch.non_tensor_batch["ability"]
     prefix_indices = [i for i, ab in enumerate(ability) if ab == "prefix"]
-    intervention_indices = [i for i, ab in enumerate(ability) if ab == "prefix_intervention"]
+    intervention_indices = [i for i, ab in enumerate(ability) if ab == "prefix-intervention"]
 
     def safe_stats(tensor: torch.Tensor, indices: list[int]):
         """Return (mean, max, min) or (0, 0, 0) if indices are empty."""
