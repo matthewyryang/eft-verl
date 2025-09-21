@@ -62,7 +62,8 @@ ray job submit --address="http://172.28.81.116:8266" \
     trainer.save_freq=5 \
     trainer.test_freq=-1 \
     trainer.total_epochs=100 \
-    data.from_hf_hub=True
+    data.from_hf_hub=True \
+    trainer.resume_mode="auto"
 "
 
 ---------
@@ -193,5 +194,6 @@ ray job submit --address="http://172.28.80.204:8265" \
     trainer.save_freq=5 \
     trainer.test_freq=-1 \
     trainer.total_epochs=100 \
-    data.from_hf_hub=True
+    data.from_hf_hub=True \
+    trainer.resume_mode="auto"
 "
