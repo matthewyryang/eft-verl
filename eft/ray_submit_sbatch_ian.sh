@@ -109,7 +109,7 @@ echo "Submitting Ray job: $JOB_SCRIPT_NAME from $JOB_WORKING_DIR"
 
 /u/iwu2/anaconda3/envs/verl/bin/ray job submit --address="http://$head_node_ip:$RAY_DASHBOARD_PORT" \
   --no-wait \
-  --runtime-env $JOB_WORKING_DIR/runtime_env.yaml \
+  --runtime-env $JOB_WORKING_DIR/verl/trainer/runtime_env.yaml \
   -- sh -c "exec bash $JOB_SCRIPT_NAME > /u/iwu2/logs/ray/slurm-ray-${SLURM_JOB_ID}.out 2>&1"
 
 # Check the exit status of job submission

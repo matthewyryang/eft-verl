@@ -7,7 +7,7 @@ export VLLM_ATTENTION_BACKEND=XFORMERS
 
 python3 -m verl.trainer.main_ppo \
     algorithm.adv_estimator=grpo \
-    data.train_files=HerrHruby/interventions_e3_prefix_RL_intervention_only \
+    data.train_files=HerrHruby/interventions_qwen3_4b_inst_nothink_prefix_RL \
     data.val_files=CMU-AIRe/hmmt-aime-2025 \
     data.train_batch_size=32 \
     data.max_prompt_length=4096 \
@@ -18,7 +18,7 @@ python3 -m verl.trainer.main_ppo \
     data.apply_chat_template_train=False \
     data.apply_chat_template_val=True \
     data.filter_overlong_prompts=True \
-    actor_rollout_ref.model.path=CMU-AIRe/e3-1.7B \
+    actor_rollout_ref.model.path=Qwen/Qwen3-4B-Instruct-2507 \
     actor_rollout_ref.actor.optim.lr=1e-6 \
     actor_rollout_ref.model.use_remove_padding=True \
     actor_rollout_ref.actor.clip_ratio_low=0.2 \
@@ -57,10 +57,11 @@ python3 -m verl.trainer.main_ppo \
     trainer.critic_warmup=0 \
     trainer.logger=['console','wandb'] \
     trainer.project_name=interventions \
-    trainer.experiment_name=interventions_actual_e3_prefix_RL_intervention_only \
+    trainer.experiment_name=interventions_qwen3_4b_inst_prefix_RL \
     trainer.n_gpus_per_node=4 \
-    trainer.nnodes=2 \
+    trainer.nnodes=4 \
     trainer.save_freq=5 \
     trainer.test_freq=-1 \
     trainer.total_epochs=100 \
-    data.from_hf_hub=True
+    data.from_hf_hub=True \
+    trainer.resume_mode="auto"
