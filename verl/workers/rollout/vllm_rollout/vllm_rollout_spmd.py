@@ -176,6 +176,11 @@ class vLLMRollout(BaseRollout):
             else:
                 logger.warning(f"cudagraph_capture_sizes must be a list, but got {cudagraph_capture_sizes}")
 
+        print("Loading inference engine...")
+        print(f"compilation_config: {compilation_config}")
+        print(f"engine_kwargs: {engine_kwargs}")
+        print(f"lora_kwargs: {lora_kwargs}")
+
         self.inference_engine = LLM(
             model=model_path,
             enable_sleep_mode=config.free_cache_engine,
@@ -199,6 +204,8 @@ class vLLMRollout(BaseRollout):
             **lora_kwargs,
             **engine_kwargs,
         )
+
+        print(f"inference_engine: {self.inference_engine}")
 
         # Offload vllm model to reduce peak memory usage
         if config.free_cache_engine:
@@ -329,6 +336,9 @@ class vLLMRollout(BaseRollout):
                     LoRARequest(lora_name=f"{lora_int_id}", lora_int_id=lora_int_id, lora_path="/simon-stub-path")
                 ] * batch_size
 
+        print("Calling inference engine generation...")
+        print(f"Length of vllm_inputs: {len(vllm_inputs)}")
+        print(f"keys of vllm_inputs: {[list(vllm_inputs[i].keys()) for i in range(len(vllm_inputs))]}")
         # users can customize different sampling_params at different run
         with self.update_sampling_params(**kwargs):
             outputs = self.inference_engine.generate(

@@ -1,8 +1,8 @@
-ray job submit --address="http://172.28.81.116:8266" \
+ray job submit --address="http://172.28.80.152:8269" \
   --runtime-env=verl/trainer/runtime_env.yaml \
   --no-wait \
   -- \
-  bash -c "source /u/iwu2/anaconda3/bin/activate verl &&
+  bash -c "source /u/iwu2/anaconda3/bin/activate verl_stable &&
         cd /u/iwu2/code/eft-verl &&
         python3 -m verl.trainer.main_ppo \
     algorithm.adv_estimator=grpo \
@@ -54,7 +54,7 @@ ray job submit --address="http://172.28.81.116:8266" \
     custom_reward_function.path=verl/utils/reward_score/math_verify.py \
     trainer.val_before_train=False \
     trainer.critic_warmup=0 \
-    trainer.logger=['console','wandb'] \
+    trainer.logger=['console'] \
     trainer.project_name=interventions \
     trainer.experiment_name=interventions_e3_prefix_RL_intervention_only \
     trainer.n_gpus_per_node=4 \
@@ -63,7 +63,7 @@ ray job submit --address="http://172.28.81.116:8266" \
     trainer.test_freq=-1 \
     trainer.total_epochs=100 \
     data.from_hf_hub=True \
-    trainer.resume_mode="auto"
+    trainer.resume_mode=disable
 "
 
 ---------
